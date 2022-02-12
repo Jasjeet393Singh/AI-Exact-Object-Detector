@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>AI Object Finder</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Mina:wght@700&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/p5@1.0.0/lib/addons/p5.sound.min.js" target="_blank"></script>
+        <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+
+    <body background="HEXAGONS ARE THE BESTAGONS.jpg">
+        <center>
+            <h1 class="btn btn-warning heading">AI Object Finder
+              <br>
+              <span class="note">HOW TO USE: Type The Object Name That You Want To Detect (NOTE: Write The Name Which CoCoSSD Uses Or It Would Not Detect), Then Click The "Start Detection" Button And Then It Will Detect.</span>
+            </h1>
+            <br><br>
+            <input id="input">
+            <br><br>
+            <h3 id="status" class="btn btn-warning"></h3>
+            <h3 id="number_of_objects" class="btn btn-warning"></h3>
+            <br>
+            <h3 id="object_detected" class="btn btn-warning"></h3>
+            <br><br>
+            <button onclick="start_detection();" class="btn btn-success" id="start_detection">Start Detection</button>
+          </center>
+        
+          <div class="footer">
+            Developed By - 𝓙.𝓢
+          </div>
+        
+          <script src="main.js"></script>
+    </body>
+</html>
