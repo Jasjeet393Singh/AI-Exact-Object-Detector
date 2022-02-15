@@ -2,12 +2,9 @@ video = "";
 objects = [];
 status = "";
 hexagon = "";
-input = "";
-detect = "";
 
 function preload() {
     hexagon = loadSound("Hexagon.mp3");
-    input = document.getElementById("input").value;
 }
 
 function setup() {
@@ -20,6 +17,7 @@ function setup() {
 function start_detection() {
     objectDetector = ml5.objectDetector('cocossd', modelLoaded);
     document.getElementById("status").innerHTML = "Status: Detecting Objects";
+    input = document.getElementById("input").value;
 }
 
 function modelLoaded() {
@@ -27,14 +25,23 @@ function modelLoaded() {
     status = true;
 }
 
+function gotResult(error, results) {
+    if (error) {
+        console.error();
+    } else {
+        console.log(results);
+        objects = results;
+    }
+}
+
 function draw() {
     image(video, 0, 0, 640, 480);
-    if (status != "" && input != objects) {
+    if (status != "") {
         hexagon.stop()
+        objectDetector.detect(video, gotResult);
         for (i = 0; i < objects.length; i++) {
             document.getElementById("status").innerHTML = "Status : Objects Detected";
-            document.getElementById("no_of_objects").innerHTML = "No. of Objects Detected: " + objects;
-            document.getElementById("object_detected").innerHTML = "Correct Object Not Detected!"
+            document.getElementById("number_of_objects").innerHTML = "No. of Objects Detected: " + objects.length;
             fill("#FF0000");
             percent = floor(objects[i].confidence * 100);
             text(objects[i].label + "" + percent + "%", objects[i].x, objects[i].y);
@@ -42,30 +49,28 @@ function draw() {
             stroke("#FF0000");
             rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
             
-        }
-    }
-    
-    if (status = "") {
-        hexagon.stop();
-        document.getElementById("status").innerHTML = "Status : Objects Detected";
-        document.getElementById("no_of_objects").innerHTML = "No Objects Detected!";
-        document.getElementById("object_detected").innerHTML = "No Objects Detected!";
-        
-    }
+            if (status = "") {
+                hexagon.stop();
+                document.getElementById("status").innerHTML = "Status : Objects Detected";
+                document.getElementById("no_of_objects").innerHTML = "No Objects Detected!";
+                document.getElementById("object_detected").innerHTML = "No Objects Detected!";
+                
+            }
 
-    if (input = objects && status != "") {
+    if (objects[i].label == input) {
         hexagon.play();
-        console.log("Correct Object Found!")
-        for (i = 0; i < objects.length; i++) {
-            document.getElementById("status").innerHTML = "Status : Objects Detected";
-            document.getElementById("no_of_objects").innerHTML = "No. of Objects Detected: " + objects;
-            document.getElementById("object_detected").innerHTML = "Correct Object Detected!";
-            fill("#FF0000");
-            percent = floor(objects[i].confidence * 100);
-            text(objects[i].label + "" + percent + "%", objects[i].x, objects[i].y);
-            noFill();
-            stroke("#FF0000");
-            rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
+        video.stop()
+        objectDetector.detect(gotResult);
+            document.getElementById("status").innerHTML = input + "Found!";
+            document.getElementById("number_of_objects").innerHTML = "No. of Objects Detected: " + objects.length;
         }
-    }
+
+        else {
+            document.getElementById("status").innerHTML = input + "Not Found!";
+        }
+ 
+     }
+
+  }
+
 }
